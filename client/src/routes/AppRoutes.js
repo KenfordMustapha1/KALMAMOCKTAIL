@@ -12,6 +12,7 @@ import OrdersPage from '../pages/OrdersPage';
 import ProfilePage from '../pages/ProfilePage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
+import AdminLoginPage from '../pages/admin/AdminLoginPage';
 
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminOrders from '../pages/admin/AdminOrders';
@@ -46,6 +47,8 @@ const AppRoutes = () => {
           }
         />
       </Route>
+
+      <Route path="/admin/login" element={<AdminLoginPage />} />
 
       <Route
         path="/admin"

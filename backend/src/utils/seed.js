@@ -91,11 +91,11 @@ const seedData = async () => {
     if (!adminExists) {
       await User.create({
         name: 'KALMA Admin',
-        email: 'admin@kalmamixtail.com',
-        password: 'admin123',
+        email: 'ADmin@kalmamixtail.com',
+        password: 'KAMixtail123',
         role: 'admin',
       });
-      console.log('Admin user created: admin@kalmamixtail.com / admin123');
+      console.log('Admin user created: ADmin@kalmamixtail.com / KAMixtail123');
     } else {
       console.log('Admin user already exists');
     }
