@@ -1,17 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorMessage from '../../components/ErrorMessage';
+import { getAdminSetupStatus } from '../../services/authService';
 
 const AdminLoginPage = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [setupAvailable, setSetupAvailable] = useState(false);
   const { login, isAuthenticated, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/admin';
+
+  useEffect(() => {
+    const checkSetupStatus = async () => {
+      try {
+        const status = await getAdminSetupStatus();
+        setSetupAvailable(!status.adminExists);
+      } catch {
+        setSetupAvailable(false);
+      }
+    };
+    checkSetupStatus();
+  }, []);
 
   if (isAuthenticated && isAdmin) {
     return <Navigate to={from} replace />;
@@ -83,6 +97,10 @@ const AdminLoginPage = () => {
           <p className="text-center text-kalma-muted text-sm mt-6">
             Not an admin?{' '}
             <Link to="/login" className="text-kalma-gold hover:underline">Go to user login</Link>
+          </p>
+          <p className="text-center text-kalma-muted text-sm mt-2">
+            Need to create admin?{' '}
+            <Link to="/admin/setup" className="text-kalma-gold hover:underline">Register admin</Link>
           </p>
         </div>
       </div>

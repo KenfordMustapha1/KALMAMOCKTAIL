@@ -13,6 +13,7 @@ import ProfilePage from '../pages/ProfilePage';
 import LoginPage from '../pages/LoginPage';
 import RegisterPage from '../pages/RegisterPage';
 import AdminLoginPage from '../pages/admin/AdminLoginPage';
+import AdminSetupPage from '../pages/admin/AdminSetupPage';
 
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminOrders from '../pages/admin/AdminOrders';
@@ -49,6 +50,7 @@ const AppRoutes = () => {
       </Route>
 
       <Route path="/admin/login" element={<AdminLoginPage />} />
+      <Route path="/admin/setup" element={<AdminSetupPage />} />
 
       <Route
         path="/admin"

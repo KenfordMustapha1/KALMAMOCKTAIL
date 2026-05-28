@@ -19,3 +19,13 @@ export const updateProfile = async (userData) => {
   const { data } = await api.put('/auth/profile', userData);
   return data;
 };
+
+export const getAdminSetupStatus = async () => {
+  const { data } = await api.get('/auth/admin/setup-status');
+  return data;
+};
+
+export const setupAdmin = async (adminData) => {
+  const { data } = await api.post('/auth/admin/setup', adminData);
+  return data;
+};

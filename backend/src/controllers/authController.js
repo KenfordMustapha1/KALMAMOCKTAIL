@@ -25,6 +25,48 @@ const registerUser = async (req, res) => {
   }
 };
 
+const getAdminSetupStatus = async (req, res) => {
+  try {
+    const adminExists = (await User.countDocuments({ role: 'admin' })) > 0;
+    res.json({ adminExists });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+const setupAdminUser = async (req, res) => {
+  try {
+    const adminExists = (await User.countDocuments({ role: 'admin' })) > 0;
+    if (adminExists) {
+      return res.status(403).json({ message: 'Admin setup is no longer available' });
+    }
+
+    const { name, email, password } = req.body;
+    const normalizedEmail = email?.toLowerCase();
+
+    if (!name || !normalizedEmail || !password) {
+      return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
+
+    const user = await User.create({
+      name,
+      email: normalizedEmail,
+      password,
+      role: 'admin',
+    });
+
+    res.status(201).json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -80,4 +122,11 @@ const updateProfile = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser, getProfile, updateProfile };
+module.exports = {
+  registerUser,
+  loginUser,
+  getProfile,
+  updateProfile,
+  getAdminSetupStatus,
+  setupAdminUser,
+};
