@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-kalma-dark text-white font-sans antialiased;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-kalma-darker;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-kalma-border rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-kalma-gold/50;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-kalma-gold text-kalma-dark font-semibold rounded-lg
+           hover:bg-kalma-accent transition-all duration-300
+           hover:shadow-lg hover:shadow-kalma-gold/20 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 border border-kalma-gold/50 text-kalma-gold font-semibold rounded-lg
+           hover:bg-kalma-gold/10 transition-all duration-300 active:scale-95;
+  }
+
+  .btn-danger {
+    @apply px-4 py-2 bg-red-600/80 text-white rounded-lg hover:bg-red-600 transition-colors;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-3 bg-kalma-card border border-kalma-border rounded-lg
+           text-white placeholder-kalma-muted focus:outline-none focus:border-kalma-gold/50
+           focus:ring-1 focus:ring-kalma-gold/30 transition-all;
+  }
+
+  .card {
+    @apply bg-kalma-card border border-kalma-border rounded-xl overflow-hidden
+           hover:border-kalma-gold/30 transition-all duration-300;
+  }
+
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-semibold text-white;
+  }
+
+  .gold-gradient-text {
+    @apply bg-gradient-to-r from-kalma-gold to-kalma-accent bg-clip-text text-transparent;
+  }
+}

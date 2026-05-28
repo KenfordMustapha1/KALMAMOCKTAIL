@@ -1,0 +1,100 @@
+import { useEffect, useState } from 'react';
+import { getAllOrders, updateOrderStatus } from '../../services/orderService';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import ErrorMessage from '../../components/ErrorMessage';
+import StatusBadge from '../../components/StatusBadge';
+import { ORDER_STATUSES } from '../../utils/constants';
+import { formatPrice, formatDate } from '../../utils/formatters';
+
+const AdminOrders = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [updating, setUpdating] = useState(null);
+
+  const fetchOrders = async () => {
+    setLoading(true);
+    try {
+      const data = await getAllOrders();
+      setOrders(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const handleStatusChange = async (orderId, status) => {
+    setUpdating(orderId);
+    try {
+      const updated = await updateOrderStatus(orderId, status);
+      setOrders((prev) => prev.map((o) => (o._id === orderId ? updated : o)));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUpdating(null);
+    }
+  };
+
+  if (loading) return <LoadingSpinner className="py-20" size="lg" />;
+
+  return (
+    <div className="animate-fade-in">
+      <h1 className="font-display text-3xl font-bold text-white mb-8">Orders</h1>
+      {error && <div className="mb-4"><ErrorMessage message={error} onRetry={fetchOrders} /></div>}
+
+      {orders.length === 0 ? (
+        <p className="text-kalma-muted">No orders yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {orders.map((order) => (
+            <div key={order._id} className="card p-6">
+              <div className="flex flex-wrap justify-between gap-4 mb-4">
+                <div>
+                  <p className="text-white font-medium">{order.user?.name}</p>
+                  <p className="text-kalma-muted text-sm">{order.user?.email}</p>
+                  <p className="text-kalma-muted text-xs mt-1">{formatDate(order.createdAt)}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <StatusBadge status={order.status} />
+                  <span className="text-kalma-gold font-bold">{formatPrice(order.totalPrice)}</span>
+                </div>
+              </div>
+
+              <div className="space-y-1 mb-4 text-sm">
+                {order.items.map((item, idx) => (
+                  <p key={idx} className="text-kalma-muted">
+                    {item.name} × {item.quantity} — {formatPrice(item.price * item.quantity)}
+                  </p>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-2">
+                {ORDER_STATUSES.map((status) => (
+                  <button
+                    key={status}
+                    onClick={() => handleStatusChange(order._id, status)}
+                    disabled={updating === order._id || order.status === status}
+                    className={`px-3 py-1 text-xs rounded-lg border transition-all ${
+                      order.status === status
+                        ? 'bg-kalma-gold text-kalma-dark border-kalma-gold'
+                        : 'border-kalma-border text-kalma-muted hover:border-kalma-gold/50 disabled:opacity-50'
+                    }`}
+                  >
+                    {status}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default AdminOrders;
