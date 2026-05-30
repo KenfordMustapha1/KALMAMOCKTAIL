@@ -1,31 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorMessage from '../../components/ErrorMessage';
-import { getAdminSetupStatus } from '../../services/authService';
 
 const AdminLoginPage = () => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [setupAvailable, setSetupAvailable] = useState(false);
   const { login, isAuthenticated, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/admin';
-
-  useEffect(() => {
-    const checkSetupStatus = async () => {
-      try {
-        const status = await getAdminSetupStatus();
-        setSetupAvailable(!status.adminExists);
-      } catch {
-        setSetupAvailable(false);
-      }
-    };
-    checkSetupStatus();
-  }, []);
 
   if (isAuthenticated && isAdmin) {
     return <Navigate to={from} replace />;

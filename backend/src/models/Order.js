@@ -29,6 +29,14 @@ const orderSchema = new mongoose.Schema(
       enum: ['Pending', 'Preparing', 'Ready', 'Completed'],
       default: 'Pending',
     },
+    orderType: {
+      type: String,
+      enum: ['standard', 'qr_preorder'],
+      default: 'standard',
+    },
+    sourceToken: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

@@ -10,6 +10,7 @@ const drinkRoutes = require('./routes/drinkRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const userRoutes = require('./routes/userRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const preOrderRoutes = require('./routes/preOrderRoutes');
 
 connectDB();
 
@@ -19,6 +20,7 @@ const allowedOrigins = [
   process.env.CLIENT_URL,
   'http://localhost:3000',
   'https://kalma-mixtail.vercel.app',
+  'https://kalmamocktail.vercel.app',
 ].filter(Boolean);
 
 app.use(
@@ -46,6 +48,7 @@ app.use('/api/drinks', drinkRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/preorders', preOrderRoutes);
 
 app.use(errorHandler);
 

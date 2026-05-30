@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { getAllOrders, updateOrderStatus } from '../../services/orderService';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorMessage from '../../components/ErrorMessage';
@@ -11,6 +12,8 @@ const AdminOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState(null);
+  const location = useLocation();
+  const successMessage = location.state?.message;
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -45,6 +48,11 @@ const AdminOrders = () => {
   return (
     <div className="animate-fade-in">
       <h1 className="font-display text-3xl font-bold text-white mb-8">Orders</h1>
+      {successMessage && (
+        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6 text-green-400">
+          {successMessage}
+        </div>
+      )}
       {error && <div className="mb-4"><ErrorMessage message={error} onRetry={fetchOrders} /></div>}
 
       {orders.length === 0 ? (
@@ -60,6 +68,11 @@ const AdminOrders = () => {
                   <p className="text-kalma-muted text-xs mt-1">{formatDate(order.createdAt)}</p>
                 </div>
                 <div className="flex items-center gap-3">
+                  {order.orderType === 'qr_preorder' && (
+                    <span className="text-xs px-2 py-1 rounded bg-kalma-gold/20 text-kalma-gold border border-kalma-gold/30">
+                      QR Pre-order
+                    </span>
+                  )}
                   <StatusBadge status={order.status} />
                   <span className="text-kalma-gold font-bold">{formatPrice(order.totalPrice)}</span>
                 </div>

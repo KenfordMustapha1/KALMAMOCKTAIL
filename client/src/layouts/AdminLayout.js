@@ -6,6 +6,7 @@ const AdminLayout = () => {
 
   const sidebarLinks = [
     { to: '/admin', label: 'Dashboard', end: true },
+    { to: '/admin/scan', label: 'Scan QR' },
     { to: '/admin/orders', label: 'Orders' },
     { to: '/admin/drinks', label: 'Drinks' },
     { to: '/admin/customers', label: 'Customers' },

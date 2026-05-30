@@ -19,6 +19,8 @@ import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminOrders from '../pages/admin/AdminOrders';
 import AdminDrinks from '../pages/admin/AdminDrinks';
 import AdminCustomers from '../pages/admin/AdminCustomers';
+import AdminScanPage from '../pages/admin/AdminScanPage';
+import { PreOrderRedeemPage, PreOrderSharePage } from '../pages/PreOrderPage';
 
 const AppRoutes = () => {
   return (
@@ -29,6 +31,8 @@ const AppRoutes = () => {
         <Route path="/drinks/:id" element={<DrinkDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/preorder/:token" element={<PreOrderRedeemPage />} />
+        <Route path="/preorder/:token/share" element={<PreOrderSharePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route
@@ -62,6 +66,8 @@ const AppRoutes = () => {
       >
         <Route index element={<AdminDashboard />} />
         <Route path="orders" element={<AdminOrders />} />
+        <Route path="scan" element={<AdminScanPage />} />
+        <Route path="scan/:token" element={<AdminScanPage />} />
         <Route path="drinks" element={<AdminDrinks />} />
         <Route path="customers" element={<AdminCustomers />} />
       </Route>

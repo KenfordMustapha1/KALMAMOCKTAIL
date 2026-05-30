@@ -2,6 +2,18 @@ import { createContext, useContext, useState, useEffect, useCallback } from 'rea
 
 const CartContext = createContext();
 
+const loadCartFromStorage = () => {
+  const stored = localStorage.getItem('kalmaCart');
+  if (!stored) return [];
+
+  try {
+    return JSON.parse(stored);
+  } catch {
+    localStorage.removeItem('kalmaCart');
+    return [];
+  }
+};
+
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
@@ -11,18 +23,7 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-
-  useEffect(() => {
-    const stored = localStorage.getItem('kalmaCart');
-    if (stored) {
-      try {
-        setCartItems(JSON.parse(stored));
-      } catch {
-        localStorage.removeItem('kalmaCart');
-      }
-    }
-  }, []);
+  const [cartItems, setCartItems] = useState(loadCartFromStorage);
 
   useEffect(() => {
     localStorage.setItem('kalmaCart', JSON.stringify(cartItems));
