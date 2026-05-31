@@ -78,7 +78,7 @@ const AdminDashboard = () => {
               {analytics.recentOrders?.map((order) => (
                 <div key={order._id} className="flex justify-between items-center text-sm border-b border-kalma-border pb-2 last:border-0">
                   <div>
-                    <p className="text-white">{order.user?.name}</p>
+                    <p className="text-white">{order.user?.name || order.walkInName || 'Walk-in'}</p>
                     <p className="text-kalma-muted text-xs">{formatDate(order.createdAt)}</p>
                   </div>
                   <div className="text-right">

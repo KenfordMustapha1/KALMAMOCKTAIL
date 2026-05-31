@@ -4,6 +4,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorMessage from '../../components/ErrorMessage';
 import { CATEGORIES } from '../../utils/constants';
 import { formatPrice } from '../../utils/formatters';
+import { compressImageFile } from '../../utils/imageUtils';
 
 const emptyForm = {
   name: '',
@@ -48,7 +49,7 @@ const AdminDrinks = () => {
     });
   };
 
-  const handleImageFileChange = (e) => {
+  const handleImageFileChange = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -57,18 +58,17 @@ const AdminDrinks = () => {
       return;
     }
 
-    const reader = new FileReader();
     setImageUploading(true);
     setError(null);
-    reader.onloadend = () => {
-      setFormData((prev) => ({ ...prev, image: reader.result }));
+
+    try {
+      const compressedImage = await compressImageFile(file);
+      setFormData((prev) => ({ ...prev, image: compressedImage }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
       setImageUploading(false);
-    };
-    reader.onerror = () => {
-      setError('Failed to read image file. Please try again.');
-      setImageUploading(false);
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleEdit = (drink) => {

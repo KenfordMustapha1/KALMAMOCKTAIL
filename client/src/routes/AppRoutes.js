@@ -17,6 +17,7 @@ import AdminSetupPage from '../pages/admin/AdminSetupPage';
 
 import AdminDashboard from '../pages/admin/AdminDashboard';
 import AdminOrders from '../pages/admin/AdminOrders';
+import AdminCreateOrder from '../pages/admin/AdminCreateOrder';
 import AdminDrinks from '../pages/admin/AdminDrinks';
 import AdminCustomers from '../pages/admin/AdminCustomers';
 import AdminScanPage from '../pages/admin/AdminScanPage';
@@ -66,6 +67,7 @@ const AppRoutes = () => {
       >
         <Route index element={<AdminDashboard />} />
         <Route path="orders" element={<AdminOrders />} />
+        <Route path="orders/new" element={<AdminCreateOrder />} />
         <Route path="scan" element={<AdminScanPage />} />
         <Route path="scan/:token" element={<AdminScanPage />} />
         <Route path="drinks" element={<AdminDrinks />} />

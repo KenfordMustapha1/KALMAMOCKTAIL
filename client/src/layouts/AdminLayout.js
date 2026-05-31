@@ -1,13 +1,28 @@
+import { useEffect } from 'react';
 import { Outlet, NavLink, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import useAdminOrderAlerts from '../hooks/useAdminOrderAlerts';
+import OrderSoundToggle from '../components/admin/OrderSoundToggle';
+import { unlockOrderSound } from '../utils/orderSound';
 
 const AdminLayout = () => {
   const { user, logout } = useAuth();
+
+  useAdminOrderAlerts(true);
+
+  useEffect(() => {
+    const unlockOnClick = () => {
+      unlockOrderSound();
+    };
+    window.addEventListener('click', unlockOnClick, { once: true });
+    return () => window.removeEventListener('click', unlockOnClick);
+  }, []);
 
   const sidebarLinks = [
     { to: '/admin', label: 'Dashboard', end: true },
     { to: '/admin/scan', label: 'Scan QR' },
     { to: '/admin/orders', label: 'Orders' },
+    { to: '/admin/orders/new', label: 'Manual Order' },
     { to: '/admin/drinks', label: 'Drinks' },
     { to: '/admin/customers', label: 'Customers' },
   ];
@@ -33,16 +48,18 @@ const AdminLayout = () => {
             </NavLink>
           ))}
         </nav>
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-kalma-border">
+        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-kalma-border space-y-3">
+          <OrderSoundToggle />
           <p className="text-sm text-kalma-muted truncate">{user?.name}</p>
-          <button onClick={logout} className="text-sm text-red-400 hover:text-red-300 mt-1">
+          <button onClick={logout} className="text-sm text-red-400 hover:text-red-300">
             Logout
           </button>
         </div>
       </aside>
 
       <div className="flex-1 lg:ml-64">
-        <header className="bg-kalma-dark border-b border-kalma-border px-4 py-4 lg:hidden">
+        <header className="bg-kalma-dark border-b border-kalma-border px-4 py-4 lg:hidden space-y-3">
+          <OrderSoundToggle />
           <div className="flex gap-2 overflow-x-auto">
             {sidebarLinks.map((link) => (
               <NavLink

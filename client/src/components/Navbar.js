@@ -59,7 +59,9 @@ const Navbar = () => {
                     Admin
                   </Link>
                 )}
-                <Link to="/orders" className={navLinkClass}>Orders</Link>
+                <Link to="/orders" className={navLinkClass}>
+                  Orders
+                </Link>
                 <Link to="/profile" className={navLinkClass}>{user?.name?.split(' ')[0]}</Link>
                 <button onClick={handleLogout} className="text-kalma-muted hover:text-red-400 text-sm transition-colors">
                   Logout

@@ -16,7 +16,11 @@ const orderSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+    },
+    walkInName: {
+      type: String,
+      trim: true,
+      maxlength: [100, 'Name cannot exceed 100 characters'],
     },
     items: [orderItemSchema],
     totalPrice: {
@@ -31,7 +35,7 @@ const orderSchema = new mongoose.Schema(
     },
     orderType: {
       type: String,
-      enum: ['standard', 'qr_preorder'],
+      enum: ['standard', 'qr_preorder', 'admin_manual', 'walk_in'],
       default: 'standard',
     },
     sourceToken: {
@@ -40,5 +44,13 @@ const orderSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+orderSchema.pre('validate', function (next) {
+  if (!this.user && !this.walkInName) {
+    next(new Error('Order must have a customer account or walk-in name'));
+  } else {
+    next();
+  }
+});
 
 module.exports = mongoose.model('Order', orderSchema);

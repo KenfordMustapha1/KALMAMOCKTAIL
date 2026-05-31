@@ -1,17 +1,35 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { getAllOrders, updateOrderStatus } from '../../services/orderService';
+import { Link, useLocation } from 'react-router-dom';
+import { getAllOrders, updateOrderStatus, deleteOrder } from '../../services/orderService';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorMessage from '../../components/ErrorMessage';
 import StatusBadge from '../../components/StatusBadge';
 import { ORDER_STATUSES } from '../../utils/constants';
 import { formatPrice, formatDate } from '../../utils/formatters';
+import {
+  playNewOrderBuzzer,
+  playOrderReadyBuzzer,
+  playOrderCompletedBuzzer,
+} from '../../utils/orderSound';
+
+const getCustomerLabel = (order) => {
+  if (order.user?.name) return order.user.name;
+  if (order.walkInName) return order.walkInName;
+  return 'Unknown customer';
+};
+
+const getCustomerSubLabel = (order) => {
+  if (order.user?.email) return order.user.email;
+  if (order.walkInName) return 'Walk-in customer';
+  return '';
+};
 
 const AdminOrders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState(null);
+  const [deleting, setDeleting] = useState(null);
   const location = useLocation();
   const successMessage = location.state?.message;
 
@@ -33,9 +51,16 @@ const AdminOrders = () => {
 
   const handleStatusChange = async (orderId, status) => {
     setUpdating(orderId);
+    setError(null);
     try {
       const updated = await updateOrderStatus(orderId, status);
       setOrders((prev) => prev.map((o) => (o._id === orderId ? updated : o)));
+
+      if (status === 'Ready') {
+        playOrderReadyBuzzer();
+      } else if (status === 'Completed') {
+        playOrderCompletedBuzzer();
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -43,11 +68,32 @@ const AdminOrders = () => {
     }
   };
 
+  const handleDelete = async (orderId) => {
+    if (!window.confirm('Delete this completed order permanently?')) return;
+
+    setDeleting(orderId);
+    setError(null);
+    try {
+      await deleteOrder(orderId);
+      setOrders((prev) => prev.filter((o) => o._id !== orderId));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setDeleting(null);
+    }
+  };
+
   if (loading) return <LoadingSpinner className="py-20" size="lg" />;
 
   return (
     <div className="animate-fade-in">
-      <h1 className="font-display text-3xl font-bold text-white mb-8">Orders</h1>
+      <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
+        <h1 className="font-display text-3xl font-bold text-white">Orders</h1>
+        <Link to="/admin/orders/new" className="btn-primary text-sm">
+          + Manual order
+        </Link>
+      </div>
+
       {successMessage && (
         <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6 text-green-400">
           {successMessage}
@@ -63,14 +109,19 @@ const AdminOrders = () => {
             <div key={order._id} className="card p-6">
               <div className="flex flex-wrap justify-between gap-4 mb-4">
                 <div>
-                  <p className="text-white font-medium">{order.user?.name}</p>
-                  <p className="text-kalma-muted text-sm">{order.user?.email}</p>
+                  <p className="text-white font-medium">{getCustomerLabel(order)}</p>
+                  <p className="text-kalma-muted text-sm">{getCustomerSubLabel(order)}</p>
                   <p className="text-kalma-muted text-xs mt-1">{formatDate(order.createdAt)}</p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-2">
                   {order.orderType === 'qr_preorder' && (
                     <span className="text-xs px-2 py-1 rounded bg-kalma-gold/20 text-kalma-gold border border-kalma-gold/30">
                       QR Pre-order
+                    </span>
+                  )}
+                  {(order.orderType === 'walk_in' || order.orderType === 'admin_manual') && (
+                    <span className="text-xs px-2 py-1 rounded bg-blue-500/20 text-blue-400 border border-blue-500/30">
+                      Counter order
                     </span>
                   )}
                   <StatusBadge status={order.status} />
@@ -86,21 +137,30 @@ const AdminOrders = () => {
                 ))}
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {ORDER_STATUSES.map((status) => (
+              <div className="flex flex-wrap gap-2 items-center">
+                {ORDER_STATUSES.map((orderStatus) => (
                   <button
-                    key={status}
-                    onClick={() => handleStatusChange(order._id, status)}
-                    disabled={updating === order._id || order.status === status}
+                    key={orderStatus}
+                    onClick={() => handleStatusChange(order._id, orderStatus)}
+                    disabled={updating === order._id || order.status === orderStatus}
                     className={`px-3 py-1 text-xs rounded-lg border transition-all ${
-                      order.status === status
+                      order.status === orderStatus
                         ? 'bg-kalma-gold text-kalma-dark border-kalma-gold'
                         : 'border-kalma-border text-kalma-muted hover:border-kalma-gold/50 disabled:opacity-50'
                     }`}
                   >
-                    {status}
+                    {orderStatus}
                   </button>
                 ))}
+                {order.status === 'Completed' && (
+                  <button
+                    onClick={() => handleDelete(order._id)}
+                    disabled={deleting === order._id}
+                    className="px-3 py-1 text-xs rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 disabled:opacity-50 ml-auto"
+                  >
+                    {deleting === order._id ? 'Deleting...' : 'Delete'}
+                  </button>
+                )}
               </div>
             </div>
           ))}

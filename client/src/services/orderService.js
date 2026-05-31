@@ -24,3 +24,13 @@ export const updateOrderStatus = async (id, status) => {
   const { data } = await api.put(`/orders/${id}/status`, { status });
   return data;
 };
+
+export const deleteOrder = async (id) => {
+  const { data } = await api.delete(`/orders/${id}`);
+  return data;
+};
+
+export const adminCreateOrder = async (orderData) => {
+  const { data } = await api.post('/orders/admin', orderData);
+  return data;
+};

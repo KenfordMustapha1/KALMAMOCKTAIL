@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import { getMyOrders } from '../services/orderService';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import StatusBadge from '../components/StatusBadge';
+import CustomerOrderSoundToggle from '../components/CustomerOrderSoundToggle';
 import { formatPrice, formatDate } from '../utils/formatters';
+import { unlockOrderSound } from '../utils/orderSound';
+
+const POLL_INTERVAL_MS = 10000;
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
@@ -13,25 +17,43 @@ const OrdersPage = () => {
   const location = useLocation();
   const successMessage = location.state?.message;
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const data = await getMyOrders();
-        setOrders(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchOrders();
+  const fetchOrders = useCallback(async (showLoading = true) => {
+    if (showLoading) setLoading(true);
+    try {
+      const data = await getMyOrders();
+      setOrders(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      if (showLoading) setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    fetchOrders();
+    unlockOrderSound();
+
+    const intervalId = setInterval(() => fetchOrders(false), POLL_INTERVAL_MS);
+    return () => clearInterval(intervalId);
+  }, [fetchOrders]);
 
   if (loading) return <LoadingSpinner className="py-32" size="lg" />;
 
+  const hasReadyOrder = orders.some((o) => o.status === 'Ready');
+
   return (
-    <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-in">
+    <div className="max-w-4xl mx-auto px-4 py-12 animate-fade-in pb-24">
       <h1 className="section-title mb-8">Order History</h1>
+
+      <CustomerOrderSoundToggle />
+
+      {hasReadyOrder && (
+        <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4 mb-6 text-purple-200 animate-pulse">
+          <p className="font-semibold text-white">🔔 Your order is ready for pickup!</p>
+          <p className="text-sm mt-1 opacity-90">Please come to the counter.</p>
+        </div>
+      )}
 
       {successMessage && (
         <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6 text-green-400">
@@ -46,7 +68,14 @@ const OrdersPage = () => {
       ) : (
         <div className="space-y-4">
           {orders.map((order) => (
-            <div key={order._id} className="card p-6">
+            <div
+              key={order._id}
+              className={`card p-6 ${
+                order.status === 'Ready'
+                  ? 'ring-2 ring-purple-500/50 border-purple-500/30'
+                  : ''
+              }`}
+            >
               <div className="flex flex-wrap justify-between items-start gap-4 mb-4">
                 <div>
                   <p className="text-kalma-muted text-sm">Order #{order._id.slice(-8).toUpperCase()}</p>
@@ -54,6 +83,11 @@ const OrdersPage = () => {
                 </div>
                 <StatusBadge status={order.status} />
               </div>
+              {order.status === 'Ready' && (
+                <p className="text-purple-300 text-sm font-medium mb-3">
+                  Ready for pickup — please collect at the counter
+                </p>
+              )}
               <div className="space-y-2 mb-4">
                 {order.items.map((item, idx) => (
                   <div key={idx} className="flex justify-between text-sm">
@@ -72,6 +106,10 @@ const OrdersPage = () => {
           ))}
         </div>
       )}
+
+      <p className="text-kalma-muted text-xs text-center mt-8">
+        Status updates every few seconds. Keep this page open or browse the site — you&apos;ll hear a buzz when your order is ready.
+      </p>
     </div>
   );
 };

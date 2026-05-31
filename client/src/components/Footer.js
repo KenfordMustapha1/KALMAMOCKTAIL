@@ -37,8 +37,9 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <div className="border-t border-kalma-border mt-8 pt-8 text-center text-kalma-muted text-sm">
-          &copy; {new Date().getFullYear()} KALMA MIXTAIL. All rights reserved.
+        <div className="border-t border-kalma-border mt-8 pt-8 text-center text-kalma-muted text-sm space-y-1">
+          <p>&copy; {new Date().getFullYear()} KALMA MIXTAIL. All rights reserved.</p>
+          <p>Created by Ken Ford</p>
         </div>
       </div>
     </footer>
