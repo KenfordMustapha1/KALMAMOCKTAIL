@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { getAllOrders, updateOrderStatus, deleteOrder } from '../../services/orderService';
+import {
+  getAllOrders,
+  updateOrderStatus,
+  updateOrderPayment,
+  deleteOrder,
+} from '../../services/orderService';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import ErrorMessage from '../../components/ErrorMessage';
 import StatusBadge from '../../components/StatusBadge';
 import { ORDER_STATUSES } from '../../utils/constants';
 import { formatPrice, formatDate } from '../../utils/formatters';
-import {
-  playNewOrderBuzzer,
-  playOrderReadyBuzzer,
-  playOrderCompletedBuzzer,
-} from '../../utils/orderSound';
+import { playOrderReadyBuzzer, playOrderCompletedBuzzer } from '../../utils/orderSound';
 
 const getCustomerLabel = (order) => {
   if (order.user?.name) return order.user.name;
@@ -30,6 +31,7 @@ const AdminOrders = () => {
   const [error, setError] = useState(null);
   const [updating, setUpdating] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [updatingPayment, setUpdatingPayment] = useState(null);
   const location = useLocation();
   const successMessage = location.state?.message;
 
@@ -65,6 +67,19 @@ const AdminOrders = () => {
       setError(err.message);
     } finally {
       setUpdating(null);
+    }
+  };
+
+  const handlePaymentChange = async (orderId, isPaid) => {
+    setUpdatingPayment(orderId);
+    setError(null);
+    try {
+      const updated = await updateOrderPayment(orderId, isPaid);
+      setOrders((prev) => prev.map((o) => (o._id === orderId ? updated : o)));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setUpdatingPayment(null);
     }
   };
 
@@ -125,6 +140,17 @@ const AdminOrders = () => {
                     </span>
                   )}
                   <StatusBadge status={order.status} />
+                  {order.status === 'Completed' && (
+                    <span
+                      className={`text-xs px-2 py-1 rounded border ${
+                        order.isPaid
+                          ? 'bg-green-500/20 text-green-400 border-green-500/30'
+                          : 'bg-orange-500/20 text-orange-400 border-orange-500/30'
+                      }`}
+                    >
+                      {order.isPaid === true ? 'Paid' : 'Unpaid'}
+                    </span>
+                  )}
                   <span className="text-kalma-gold font-bold">{formatPrice(order.totalPrice)}</span>
                 </div>
               </div>
@@ -153,13 +179,37 @@ const AdminOrders = () => {
                   </button>
                 ))}
                 {order.status === 'Completed' && (
-                  <button
-                    onClick={() => handleDelete(order._id)}
-                    disabled={deleting === order._id}
-                    className="px-3 py-1 text-xs rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 disabled:opacity-50 ml-auto"
-                  >
-                    {deleting === order._id ? 'Deleting...' : 'Delete'}
-                  </button>
+                  <>
+                    <button
+                      onClick={() => handlePaymentChange(order._id, true)}
+                      disabled={updatingPayment === order._id || order.isPaid === true}
+                      className={`px-3 py-1 text-xs rounded-lg border transition-all disabled:opacity-50 ${
+                        order.isPaid === true
+                          ? 'bg-green-500/20 text-green-400 border-green-500/50'
+                          : 'border-kalma-border text-kalma-muted hover:border-green-500/50 hover:text-green-400'
+                      }`}
+                    >
+                      {updatingPayment === order._id ? 'Saving...' : 'Mark paid'}
+                    </button>
+                    <button
+                      onClick={() => handlePaymentChange(order._id, false)}
+                      disabled={updatingPayment === order._id || order.isPaid !== true}
+                      className={`px-3 py-1 text-xs rounded-lg border transition-all disabled:opacity-50 ${
+                        order.isPaid !== true
+                          ? 'bg-orange-500/20 text-orange-400 border-orange-500/50'
+                          : 'border-kalma-border text-kalma-muted hover:border-orange-500/50 hover:text-orange-400'
+                      }`}
+                    >
+                      {updatingPayment === order._id ? 'Saving...' : 'Mark unpaid'}
+                    </button>
+                    <button
+                      onClick={() => handleDelete(order._id)}
+                      disabled={deleting === order._id}
+                      className="px-3 py-1 text-xs rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 disabled:opacity-50 ml-auto"
+                    >
+                      {deleting === order._id ? 'Deleting...' : 'Delete'}
+                    </button>
+                  </>
                 )}
               </div>
             </div>

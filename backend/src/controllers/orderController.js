@@ -150,6 +150,36 @@ const updateOrderStatus = async (req, res) => {
   }
 };
 
+const updateOrderPayment = async (req, res) => {
+  try {
+    const { isPaid } = req.body;
+
+    if (typeof isPaid !== 'boolean') {
+      return res.status(400).json({ message: 'isPaid must be true or false' });
+    }
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    if (order.status !== 'Completed') {
+      return res.status(400).json({
+        message: 'Payment can only be updated for completed orders',
+      });
+    }
+
+    order.isPaid = isPaid;
+    await order.save();
+
+    const populatedOrder = await populateOrder(Order.findById(order._id));
+    res.json(populatedOrder);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 const deleteOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -178,5 +208,6 @@ module.exports = {
   getOrderById,
   getAllOrders,
   updateOrderStatus,
+  updateOrderPayment,
   deleteOrder,
 };

@@ -41,6 +41,10 @@ const orderSchema = new mongoose.Schema(
     sourceToken: {
       type: String,
     },
+    isPaid: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

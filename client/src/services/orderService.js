@@ -25,6 +25,11 @@ export const updateOrderStatus = async (id, status) => {
   return data;
 };
 
+export const updateOrderPayment = async (id, isPaid) => {
+  const { data } = await api.put(`/orders/${id}/payment`, { isPaid });
+  return data;
+};
+
 export const deleteOrder = async (id) => {
   const { data } = await api.delete(`/orders/${id}`);
   return data;
