@@ -26,6 +26,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    // Handle 401 Unauthorized - clear user session
+    if (error.response?.status === 401) {
+      localStorage.removeItem('kalmaUser');
+      // Redirect to appropriate login page
+      const isAdminPath = window.location.pathname.startsWith('/admin');
+      const loginPath = isAdminPath ? '/admin/login' : '/login';
+      window.location.href = loginPath;
+    }
+    
     const message =
       error.response?.data?.message || error.message || 'Something went wrong';
     return Promise.reject(new Error(message));

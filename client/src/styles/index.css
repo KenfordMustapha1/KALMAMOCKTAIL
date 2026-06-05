@@ -28,22 +28,27 @@
   .btn-primary {
     @apply px-6 py-3 bg-kalma-gold text-kalma-dark font-semibold rounded-lg
            hover:bg-kalma-accent transition-all duration-300
-           hover:shadow-lg hover:shadow-kalma-gold/20 active:scale-95;
+           hover:shadow-lg hover:shadow-kalma-gold/20 active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed
+           text-sm sm:text-base whitespace-nowrap;
   }
 
   .btn-secondary {
     @apply px-6 py-3 border border-kalma-gold/50 text-kalma-gold font-semibold rounded-lg
-           hover:bg-kalma-gold/10 transition-all duration-300 active:scale-95;
+           hover:bg-kalma-gold/10 transition-all duration-300 active:scale-95
+           disabled:opacity-50 disabled:cursor-not-allowed
+           text-sm sm:text-base whitespace-nowrap;
   }
 
   .btn-danger {
-    @apply px-4 py-2 bg-red-600/80 text-white rounded-lg hover:bg-red-600 transition-colors;
+    @apply px-4 py-2 bg-red-600/80 text-white rounded-lg hover:bg-red-600 transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed text-sm;
   }
 
   .input-field {
-    @apply w-full px-4 py-3 bg-kalma-card border border-kalma-border rounded-lg
+    @apply w-full px-3 sm:px-4 py-2 sm:py-3 bg-kalma-card border border-kalma-border rounded-lg
            text-white placeholder-kalma-muted focus:outline-none focus:border-kalma-gold/50
-           focus:ring-1 focus:ring-kalma-gold/30 transition-all;
+           focus:ring-1 focus:ring-kalma-gold/30 transition-all text-sm sm:text-base;
   }
 
   .card {
@@ -52,7 +57,7 @@
   }
 
   .section-title {
-    @apply font-display text-3xl md:text-4xl font-semibold text-white;
+    @apply font-display font-semibold text-white;
   }
 
   .gold-gradient-text {

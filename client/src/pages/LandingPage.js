@@ -58,66 +58,66 @@ const LandingPage = () => {
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-kalma-gold/5 rounded-full blur-3xl animate-pulse-slow" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl animate-pulse-slow" />
 
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center animate-fade-in">
-          <p className="text-kalma-gold text-sm tracking-[0.3em] uppercase mb-4">Premium Beverages</p>
-          <h1 className="font-display text-5xl md:text-7xl font-bold mb-6">
+        <div className="relative z-10 max-w-4xl mx-auto px-3 sm:px-4 text-center animate-fade-in">
+          <p className="text-kalma-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-3 sm:mb-4">Premium Beverages</p>
+          <h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6">
             <span className="gold-gradient-text">KALMA</span>
             <span className="text-white"> MIXTAIL</span>
           </h1>
-          <p className="text-kalma-muted text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed">
+          <p className="text-kalma-muted text-base sm:text-lg lg:text-xl max-w-2xl mx-auto mb-6 sm:mb-8 leading-relaxed">
             Discover artisan dirty sodas, refreshing mocktails, and handcrafted cocktails.
             Every sip tells a story.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/menu" className="btn-primary">Explore Menu</Link>
-            <Link to="/register" className="btn-secondary">Create Account</Link>
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+            <Link to="/menu" className="btn-primary text-sm sm:text-base py-2.5 sm:py-3 px-6 sm:px-8">Explore Menu</Link>
+            <Link to="/register" className="btn-secondary text-sm sm:text-base py-2.5 sm:py-3 px-6 sm:px-8">Create Account</Link>
           </div>
         </div>
       </section>
 
-      <section className="py-20 px-4">
+      <section className="py-12 sm:py-20 px-3 sm:px-4">
         <div className="max-w-7xl mx-auto">
-          <h2 className="section-title text-center mb-4">Our Categories</h2>
-          <p className="text-kalma-muted text-center mb-12 max-w-xl mx-auto">
+          <h2 className="section-title text-center mb-2 sm:mb-4 text-2xl sm:text-4xl">Our Categories</h2>
+          <p className="text-kalma-muted text-center mb-8 sm:mb-12 max-w-xl mx-auto text-sm sm:text-base">
             Three distinct collections, one unforgettable experience
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
             {CATEGORIES.map((category, index) => (
               <Link
                 key={category}
                 to={`/menu?category=${encodeURIComponent(category)}`}
-                className="card p-8 text-center group hover:scale-[1.02] transition-transform animate-slide-up"
+                className="card p-6 sm:p-8 text-center group hover:scale-[1.02] transition-transform animate-slide-up"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-kalma-gold/10 flex items-center justify-center group-hover:bg-kalma-gold/20 transition-colors">
-                  <span className="text-2xl">
+                <div className="w-14 sm:w-16 h-14 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-kalma-gold/10 flex items-center justify-center group-hover:bg-kalma-gold/20 transition-colors">
+                  <span className="text-xl sm:text-2xl">
                     {category === 'Dirty Soda' ? '🥤' : category === 'Mocktail' ? '🍹' : '🍸'}
                   </span>
                 </div>
-                <h3 className="font-display text-xl font-semibold text-white group-hover:text-kalma-gold transition-colors">
+                <h3 className="font-display text-lg sm:text-xl font-semibold text-white group-hover:text-kalma-gold transition-colors">
                   {category}
                 </h3>
-                <p className="text-kalma-muted text-sm mt-2">View collection →</p>
+                <p className="text-kalma-muted text-xs sm:text-sm mt-2">View collection →</p>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="py-20 px-4 bg-kalma-darker/50">
+      <section className="py-12 sm:py-20 px-3 sm:px-4 bg-kalma-darker/50">
         <div className="max-w-7xl mx-auto">
-          <h2 className="section-title text-center mb-12">Featured Drinks</h2>
+          <h2 className="section-title text-center mb-8 sm:mb-12 text-2xl sm:text-4xl">Featured Drinks</h2>
           {loading ? (
             <LoadingSpinner className="py-12" />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {featuredDrinks.map((drink) => (
                 <DrinkCard key={drink._id} drink={drink} onAddToCart={addToCart} />
               ))}
             </div>
           )}
-          <div className="text-center mt-10">
-            <Link to="/menu" className="btn-secondary">View Full Menu</Link>
+          <div className="text-center mt-8 sm:mt-10">
+            <Link to="/menu" className="btn-secondary text-sm sm:text-base py-2.5 sm:py-3 px-6 sm:px-8">View Full Menu</Link>
           </div>
         </div>
       </section>

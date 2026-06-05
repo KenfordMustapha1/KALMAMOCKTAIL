@@ -41,42 +41,42 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="animate-fade-in">
-      <h1 className="font-display text-3xl font-bold text-white mb-8">Dashboard</h1>
+    <div className="animate-fade-in px-0">
+      <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 sm:mb-8 px-3 sm:px-0">Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {stats.map((stat) => (
-          <div key={stat.label} className="card p-6">
+          <div key={stat.label} className="card p-4 sm:p-6">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-2xl">{stat.icon}</span>
+              <span className="text-xl sm:text-2xl">{stat.icon}</span>
             </div>
-            <p className="text-kalma-muted text-sm">{stat.label}</p>
-            <p className="text-2xl font-bold text-white mt-1">{stat.value}</p>
+            <p className="text-kalma-muted text-xs sm:text-sm">{stat.label}</p>
+            <p className="text-xl sm:text-2xl font-bold text-white mt-1">{stat.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card p-6">
-          <h2 className="font-semibold text-white mb-4">Order Status Overview</h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="card p-4 sm:p-6">
+          <h2 className="font-semibold text-white mb-4 text-base sm:text-lg">Order Status Overview</h2>
           <div className="space-y-3">
             {statusCounts.map((item) => (
               <div key={item.label} className="flex justify-between items-center">
-                <span className={`${item.color}`}>{item.label}</span>
-                <span className="font-bold text-white">{item.value}</span>
+                <span className={`${item.color} text-sm sm:text-base`}>{item.label}</span>
+                <span className="font-bold text-white text-sm sm:text-base">{item.value}</span>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="card p-6">
-          <h2 className="font-semibold text-white mb-4">Recent Orders</h2>
+        <div className="card p-4 sm:p-6">
+          <h2 className="font-semibold text-white mb-4 text-base sm:text-lg">Recent Orders</h2>
           {analytics.recentOrders?.length === 0 ? (
-            <p className="text-kalma-muted text-sm">No orders yet</p>
+            <p className="text-kalma-muted text-xs sm:text-sm">No orders yet</p>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-3 max-h-64 overflow-y-auto">
               {analytics.recentOrders?.map((order) => (
-                <div key={order._id} className="flex justify-between items-center text-sm border-b border-kalma-border pb-2 last:border-0">
+                <div key={order._id} className="flex justify-between items-center text-xs sm:text-sm border-b border-kalma-border pb-2 last:border-0">
                   <div>
                     <p className="text-white">{order.user?.name || order.walkInName || 'Walk-in'}</p>
                     <p className="text-kalma-muted text-xs">{formatDate(order.createdAt)}</p>

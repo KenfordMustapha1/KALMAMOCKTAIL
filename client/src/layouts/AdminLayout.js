@@ -6,9 +6,9 @@ import OrderSoundToggle from '../components/admin/OrderSoundToggle';
 import { unlockOrderSound } from '../utils/orderSound';
 
 const AdminLayout = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
 
-  useAdminOrderAlerts(true);
+  useAdminOrderAlerts(isAdmin);
 
   useEffect(() => {
     const unlockOnClick = () => {
@@ -58,7 +58,7 @@ const AdminLayout = () => {
       </aside>
 
       <div className="flex-1 lg:ml-64">
-        <header className="bg-kalma-dark border-b border-kalma-border px-4 py-4 lg:hidden space-y-3">
+        <header className="bg-kalma-dark border-b border-kalma-border px-3 sm:px-4 py-3 sm:py-4 lg:hidden space-y-2 sm:space-y-3">
           <OrderSoundToggle />
           <div className="flex gap-2 overflow-x-auto">
             {sidebarLinks.map((link) => (
@@ -67,8 +67,8 @@ const AdminLayout = () => {
                 to={link.to}
                 end={link.end}
                 className={({ isActive }) =>
-                  `px-3 py-2 rounded-lg text-sm whitespace-nowrap ${
-                    isActive ? 'bg-kalma-gold text-kalma-dark' : 'bg-kalma-card text-kalma-muted'
+                  `px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap transition-all ${
+                    isActive ? 'bg-kalma-gold text-kalma-dark font-medium' : 'bg-kalma-card text-kalma-muted hover:bg-kalma-border'
                   }`
                 }
               >
@@ -77,7 +77,7 @@ const AdminLayout = () => {
             ))}
           </div>
         </header>
-        <main className="p-4 md:p-8">
+        <main className="p-3 sm:p-4 md:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

@@ -25,14 +25,14 @@ const Navbar = () => {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-kalma-dark/90 backdrop-blur-md border-b border-kalma-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6">
+        <div className="flex items-center justify-between h-14 sm:h-16">
           <Link to="/" className="flex items-center gap-2">
-            <span className="font-display text-xl font-bold gold-gradient-text">KALMA</span>
-            <span className="text-kalma-muted text-sm hidden sm:inline">MIXTAIL</span>
+            <span className="font-display text-lg sm:text-xl font-bold gold-gradient-text">KALMA</span>
+            <span className="text-kalma-muted text-xs sm:text-sm hidden sm:inline">MIXTAIL</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {links.map((link) => (
               <NavLink key={link.to} to={link.to} className={navLinkClass}>
                 {link.label}
@@ -40,9 +40,9 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden md:flex items-center gap-3 lg:gap-4">
             <Link to="/cart" className="relative p-2 text-kalma-muted hover:text-kalma-gold transition-colors">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
               {cartCount > 0 && (
@@ -55,7 +55,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 {isAdmin && (
-                  <Link to="/admin" className="btn-secondary text-sm py-2 px-4">
+                  <Link to="/admin" className="btn-secondary text-xs sm:text-sm py-1.5 sm:py-2 px-3 sm:px-4">
                     Admin
                   </Link>
                 )}
@@ -70,7 +70,7 @@ const Navbar = () => {
             ) : (
               <>
                 <Link to="/login" className={navLinkClass}>Login</Link>
-                <Link to="/register" className="btn-primary text-sm py-2 px-4">Sign Up</Link>
+                <Link to="/register" className="btn-primary text-xs sm:text-sm py-1.5 sm:py-2 px-3 sm:px-4">Sign Up</Link>
               </>
             )}
           </div>
@@ -91,27 +91,27 @@ const Navbar = () => {
         </div>
 
         {menuOpen && (
-          <div className="md:hidden py-4 border-t border-kalma-border animate-fade-in">
-            <div className="flex flex-col gap-4">
+          <div className="md:hidden py-3 sm:py-4 border-t border-kalma-border animate-fade-in">
+            <div className="flex flex-col gap-3">
               {links.map((link) => (
-                <NavLink key={link.to} to={link.to} className={navLinkClass} onClick={() => setMenuOpen(false)}>
+                <NavLink key={link.to} to={link.to} className="text-xs sm:text-sm pl-2" onClick={() => setMenuOpen(false)}>
                   {link.label}
                 </NavLink>
               ))}
-              <Link to="/cart" className={navLinkClass} onClick={() => setMenuOpen(false)}>
+              <Link to="/cart" className="text-xs sm:text-sm pl-2" onClick={() => setMenuOpen(false)}>
                 Cart ({cartCount})
               </Link>
               {isAuthenticated ? (
                 <>
-                  {isAdmin && <Link to="/admin" onClick={() => setMenuOpen(false)}>Admin</Link>}
-                  <Link to="/orders" onClick={() => setMenuOpen(false)}>Orders</Link>
-                  <Link to="/profile" onClick={() => setMenuOpen(false)}>Profile</Link>
-                  <button onClick={handleLogout} className="text-left text-red-400">Logout</button>
+                  {isAdmin && <Link to="/admin" className="text-xs sm:text-sm pl-2" onClick={() => setMenuOpen(false)}>Admin</Link>}
+                  <Link to="/orders" className="text-xs sm:text-sm pl-2" onClick={() => setMenuOpen(false)}>Orders</Link>
+                  <Link to="/profile" className="text-xs sm:text-sm pl-2" onClick={() => setMenuOpen(false)}>Profile</Link>
+                  <button onClick={handleLogout} className="text-left text-red-400 text-xs sm:text-sm pl-2">Logout</button>
                 </>
               ) : (
                 <>
-                  <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
-                  <Link to="/register" onClick={() => setMenuOpen(false)}>Sign Up</Link>
+                  <Link to="/login" className="text-xs sm:text-sm pl-2" onClick={() => setMenuOpen(false)}>Login</Link>
+                  <Link to="/register" className="text-xs sm:text-sm pl-2" onClick={() => setMenuOpen(false)}>Sign Up</Link>
                 </>
               )}
             </div>

@@ -49,67 +49,67 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto px-4 py-12 animate-fade-in">
-      <h1 className="section-title mb-8">My Profile</h1>
+    <div className="max-w-xl mx-auto px-3 sm:px-4 py-8 sm:py-12 animate-fade-in pb-24">
+      <h1 className="section-title mb-6 sm:mb-8 text-2xl sm:text-4xl">My Profile</h1>
 
-      <div className="card p-6 mb-6">
-        <p className="text-kalma-muted text-sm">Account Type</p>
-        <p className="text-kalma-gold font-medium capitalize">{user?.role}</p>
+      <div className="card p-4 sm:p-6 mb-4 sm:mb-6">
+        <p className="text-kalma-muted text-xs sm:text-sm">Account Type</p>
+        <p className="text-kalma-gold font-medium capitalize text-sm sm:text-base mt-1">{user?.role}</p>
       </div>
 
       {success && (
-        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6 text-green-400">
+        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 text-green-400 text-sm sm:text-base">
           Profile updated successfully!
         </div>
       )}
 
-      {error && <div className="mb-6"><ErrorMessage message={error} /></div>}
+      {error && <div className="mb-4 sm:mb-6"><ErrorMessage message={error} /></div>}
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
         <div>
-          <label className="block text-sm text-kalma-muted mb-2">Name</label>
+          <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Name</label>
           <input
             type="text"
             name="name"
             value={formData.name}
             onChange={handleChange}
-            className="input-field"
+            className="input-field text-sm"
             required
           />
         </div>
         <div>
-          <label className="block text-sm text-kalma-muted mb-2">Email</label>
+          <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Email</label>
           <input
             type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
-            className="input-field"
+            className="input-field text-sm"
             required
           />
         </div>
         <div>
-          <label className="block text-sm text-kalma-muted mb-2">New Password (optional)</label>
+          <label className="block text-xs sm:text-sm text-kalma-muted mb-2">New Password (optional)</label>
           <input
             type="password"
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="input-field"
+            className="input-field text-sm"
             minLength={6}
           />
         </div>
         <div>
-          <label className="block text-sm text-kalma-muted mb-2">Confirm Password</label>
+          <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Confirm Password</label>
           <input
             type="password"
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
-            className="input-field"
+            className="input-field text-sm"
           />
         </div>
-        <button type="submit" disabled={loading} className="btn-primary w-full flex justify-center gap-2">
+        <button type="submit" disabled={loading} className="btn-primary w-full flex justify-center gap-2 py-3 sm:py-3 text-sm sm:text-base">
           {loading ? <LoadingSpinner size="sm" /> : 'Update Profile'}
         </button>
       </form>

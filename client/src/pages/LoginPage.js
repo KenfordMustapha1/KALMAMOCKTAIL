@@ -36,19 +36,19 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center px-3 sm:px-4 py-8 sm:py-12">
       <div className="w-full max-w-md animate-fade-in">
-        <div className="text-center mb-8">
-          <h1 className="font-display text-3xl font-bold gold-gradient-text">Welcome Back</h1>
-          <p className="text-kalma-muted mt-2">Sign in to your KALMA account</p>
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold gold-gradient-text">Welcome Back</h1>
+          <p className="text-kalma-muted mt-1 sm:mt-2 text-sm sm:text-base">Sign in to your KALMA account</p>
         </div>
 
-        <div className="card p-8">
+        <div className="card p-4 sm:p-8">
           {error && <div className="mb-4"><ErrorMessage message={error} /></div>}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
             <div>
-              <label className="block text-sm text-kalma-muted mb-2">Email</label>
+              <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Email</label>
               <input
                 type="email"
                 name="email"
@@ -59,7 +59,7 @@ const LoginPage = () => {
               />
             </div>
             <div>
-              <label className="block text-sm text-kalma-muted mb-2">Password</label>
+              <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Password</label>
               <input
                 type="password"
                 name="password"
@@ -69,14 +69,14 @@ const LoginPage = () => {
                 required
               />
             </div>
-            <button type="submit" disabled={loading} className="btn-primary w-full flex justify-center gap-2">
+            <button type="submit" disabled={loading} className="btn-primary w-full flex justify-center gap-2 py-2.5 sm:py-3 text-sm sm:text-base">
               {loading ? <LoadingSpinner size="sm" /> : 'Sign In'}
             </button>
           </form>
 
-          <p className="text-center text-kalma-muted text-sm mt-6">
+          <p className="text-center text-kalma-muted text-xs sm:text-sm mt-4 sm:mt-6">
             Don&apos;t have an account?{' '}
-            <Link to="/register" className="text-kalma-gold hover:underline">Sign up</Link>
+            <Link to="/register" className="text-kalma-gold hover:underline font-medium">Sign up</Link>
           </p>
         </div>
       </div>

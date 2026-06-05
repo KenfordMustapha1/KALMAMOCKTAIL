@@ -42,9 +42,9 @@ const PreOrderRedeemPage = () => {
 
   if (error && !preOrder) {
     return (
-      <div className="max-w-xl mx-auto px-4 py-20 text-center">
+      <div className="max-w-xl mx-auto px-3 sm:px-4 py-12 sm:py-20 text-center min-h-screen flex flex-col items-center justify-center">
         <ErrorMessage message={error} />
-        <Link to="/menu" className="btn-primary mt-6 inline-block">Browse Menu</Link>
+        <Link to="/menu" className="btn-primary mt-6 inline-block text-sm sm:text-base py-2.5 sm:py-3">Browse Menu</Link>
       </div>
     );
   }
@@ -55,65 +55,65 @@ const PreOrderRedeemPage = () => {
   );
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12 animate-fade-in">
-      <h1 className="section-title mb-2">Your Pre-order</h1>
-      <p className="text-kalma-muted mb-8">
+    <div className="max-w-2xl mx-auto px-3 sm:px-4 py-8 sm:py-12 animate-fade-in pb-20">
+      <h1 className="section-title mb-1 sm:mb-2 text-2xl sm:text-4xl">Your Pre-order</h1>
+      <p className="text-kalma-muted mb-4 sm:mb-8 text-sm sm:text-base">
         Show your QR code to staff at the counter. They will scan it to place your order.
       </p>
 
       {preOrder.used && (
-        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 mb-6 text-green-400">
+        <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 text-green-400 text-sm sm:text-base">
           This pre-order has been placed. Check your order history for status updates.
         </div>
       )}
 
       {preOrder.expired && !preOrder.used && (
-        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 mb-6 text-red-400">
+        <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 text-red-400 text-sm sm:text-base">
           This pre-order has expired. Please create a new one from your cart.
         </div>
       )}
 
-      <div className="card p-6 mb-6">
-        <div className="flex flex-wrap justify-between gap-2 mb-4 text-sm text-kalma-muted">
+      <div className="card p-4 sm:p-6 mb-4 sm:mb-6">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-2 mb-4 text-xs sm:text-sm text-kalma-muted">
           <span>Customer: {preOrder.user?.name}</span>
           <span>Expires: {formatDate(preOrder.expiresAt)}</span>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {preOrder.items.map((item) => (
-            <div key={item.drink._id} className="flex justify-between text-sm">
+            <div key={item.drink._id} className="flex justify-between text-xs sm:text-sm">
               <span className="text-kalma-muted">
                 {item.drink.name} × {item.quantity}
               </span>
-              <span className="text-white">
+              <span className="text-white font-medium">
                 {formatPrice(item.drink.price * item.quantity)}
               </span>
             </div>
           ))}
         </div>
 
-        <div className="border-t border-kalma-border mt-4 pt-4 flex justify-between">
-          <span className="font-semibold text-white">Total</span>
-          <span className="text-xl font-bold text-kalma-gold">{formatPrice(total)}</span>
+        <div className="border-t border-kalma-border mt-4 pt-4 flex flex-col sm:flex-row sm:justify-between gap-2">
+          <span className="font-semibold text-white text-sm">Total</span>
+          <span className="text-2xl sm:text-3xl font-bold text-kalma-gold">{formatPrice(total)}</span>
         </div>
       </div>
 
       {!preOrder.used && !preOrder.expired && (
-        <div className="card p-6 text-center">
-          <p className="text-kalma-muted text-sm mb-2">Waiting for staff to scan your QR</p>
-          <Link to={`/preorder/${token}/share`} className="text-kalma-gold hover:underline text-sm">
+        <div className="card p-4 sm:p-6 text-center mb-4">
+          <p className="text-kalma-muted text-xs sm:text-sm mb-2">Waiting for staff to scan your QR</p>
+          <Link to={`/preorder/${token}/share`} className="text-kalma-gold hover:underline text-xs sm:text-sm font-medium">
             View your QR code
           </Link>
         </div>
       )}
 
       {isAuthenticated && (
-        <Link to="/orders" className="block text-center text-kalma-muted hover:text-white mt-6 text-sm">
+        <Link to="/orders" className="block text-center text-kalma-muted hover:text-white mt-4 sm:mt-6 text-xs sm:text-sm">
           View order history
         </Link>
       )}
 
-      <Link to="/menu" className="block text-center text-kalma-muted hover:text-white mt-2 text-sm">
+      <Link to="/menu" className="block text-center text-kalma-muted hover:text-white mt-2 text-xs sm:text-sm">
         Back to menu
       </Link>
     </div>
