@@ -21,6 +21,7 @@ import AdminCreateOrder from '../pages/admin/AdminCreateOrder';
 import AdminDrinks from '../pages/admin/AdminDrinks';
 import AdminCustomers from '../pages/admin/AdminCustomers';
 import AdminScanPage from '../pages/admin/AdminScanPage';
+import AdminRegistrationCodes from '../pages/admin/AdminRegistrationCodes';
 import { PreOrderRedeemPage, PreOrderSharePage } from '../pages/PreOrderPage';
 
 const AppRoutes = () => {
@@ -72,6 +73,7 @@ const AppRoutes = () => {
         <Route path="scan/:token" element={<AdminScanPage />} />
         <Route path="drinks" element={<AdminDrinks />} />
         <Route path="customers" element={<AdminCustomers />} />
+        <Route path="codes" element={<AdminRegistrationCodes />} />
       </Route>
     </Routes>
   );

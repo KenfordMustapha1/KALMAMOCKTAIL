@@ -4,6 +4,7 @@ import { getMyOrders } from '../services/orderService';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import StatusBadge from '../components/StatusBadge';
+import { Bell } from 'lucide-react';
 import CustomerOrderSoundToggle from '../components/CustomerOrderSoundToggle';
 import { formatPrice, formatDate } from '../utils/formatters';
 import { unlockOrderSound } from '../utils/orderSound';
@@ -52,7 +53,10 @@ const OrdersPage = () => {
 
       {hasReadyOrder && (
         <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6 text-purple-200 animate-pulse">
-          <p className="font-semibold text-white text-sm sm:text-base">🔔 Your order is ready for pickup!</p>
+          <p className="font-semibold text-white text-sm sm:text-base flex items-center gap-2">
+            <Bell className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+            Your order is ready for pickup!
+          </p>
           <p className="text-xs sm:text-sm mt-1 opacity-90">Please come to the counter.</p>
         </div>
       )}

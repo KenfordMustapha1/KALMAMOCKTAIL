@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Bell, BellOff } from 'lucide-react';
 import {
   isOrderSoundEnabled,
   setOrderSoundEnabled,
@@ -45,13 +46,18 @@ const OrderSoundToggle = () => {
       <button
         type="button"
         onClick={handleToggle}
-        className={`w-full text-left text-sm px-3 py-2 rounded-lg border transition-colors ${
+        className={`w-full flex items-center gap-2 text-sm px-3 py-2 rounded-lg border transition-colors ${
           enabled
             ? 'border-kalma-gold/50 text-kalma-gold bg-kalma-gold/10'
             : 'border-kalma-border text-kalma-muted hover:text-white'
         }`}
       >
-        {enabled ? '🔔 Order buzzer: ON' : '🔕 Order buzzer: OFF'}
+        {enabled ? (
+          <Bell className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+        ) : (
+          <BellOff className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+        )}
+        {enabled ? 'Order buzzer: ON' : 'Order buzzer: OFF'}
       </button>
       {enabled && needsUnlock && (
         <button

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Bell, CircleCheck, X } from 'lucide-react';
 
 const CustomerOrderAlertBanner = ({ alert, onDismiss }) => {
   if (!alert) return null;
@@ -17,7 +18,11 @@ const CustomerOrderAlertBanner = ({ alert, onDismiss }) => {
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-semibold text-white flex items-center gap-2">
-            <span>{isReady ? '🔔' : '✅'}</span>
+            {isReady ? (
+              <Bell className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+            ) : (
+              <CircleCheck className="w-5 h-5 shrink-0" strokeWidth={1.75} />
+            )}
             {alert.message}
           </p>
           <Link
@@ -31,10 +36,10 @@ const CustomerOrderAlertBanner = ({ alert, onDismiss }) => {
         <button
           type="button"
           onClick={onDismiss}
-          className="text-white/70 hover:text-white text-xl leading-none"
+          className="text-white/70 hover:text-white p-1"
           aria-label="Dismiss"
         >
-          ×
+          <X className="w-5 h-5" strokeWidth={1.75} />
         </button>
       </div>
     </div>

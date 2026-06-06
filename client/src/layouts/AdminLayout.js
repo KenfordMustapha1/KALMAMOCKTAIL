@@ -1,5 +1,15 @@
 import { useEffect } from 'react';
 import { Outlet, NavLink, Link } from 'react-router-dom';
+import {
+  ClipboardList,
+  KeyRound,
+  LayoutDashboard,
+  LogOut,
+  PenLine,
+  QrCode,
+  Users,
+  Wine,
+} from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import useAdminOrderAlerts from '../hooks/useAdminOrderAlerts';
 import OrderSoundToggle from '../components/admin/OrderSoundToggle';
@@ -19,16 +29,17 @@ const AdminLayout = () => {
   }, []);
 
   const sidebarLinks = [
-    { to: '/admin', label: 'Dashboard', end: true },
-    { to: '/admin/scan', label: 'Scan QR' },
-    { to: '/admin/orders', label: 'Orders' },
-    { to: '/admin/orders/new', label: 'Manual Order' },
-    { to: '/admin/drinks', label: 'Drinks' },
-    { to: '/admin/customers', label: 'Customers' },
+    { to: '/admin', label: 'Dashboard', end: true, icon: LayoutDashboard },
+    { to: '/admin/scan', label: 'Scan QR', icon: QrCode },
+    { to: '/admin/orders', label: 'Orders', icon: ClipboardList },
+    { to: '/admin/orders/new', label: 'Manual Order', icon: PenLine },
+    { to: '/admin/drinks', label: 'Drinks', icon: Wine },
+    { to: '/admin/customers', label: 'Customers', icon: Users },
+    { to: '/admin/codes', label: 'Registration Codes', icon: KeyRound },
   ];
 
   const linkClass = ({ isActive }) =>
-    `block px-4 py-3 rounded-lg transition-all ${
+    `flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
       isActive
         ? 'bg-kalma-gold/10 text-kalma-gold border-l-2 border-kalma-gold'
         : 'text-kalma-muted hover:text-white hover:bg-kalma-card'
@@ -42,16 +53,21 @@ const AdminLayout = () => {
           <p className="text-kalma-muted text-xs mt-1">Admin Dashboard</p>
         </div>
         <nav className="p-4 space-y-1">
-          {sidebarLinks.map((link) => (
-            <NavLink key={link.to} to={link.to} end={link.end} className={linkClass}>
-              {link.label}
-            </NavLink>
-          ))}
+          {sidebarLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <NavLink key={link.to} to={link.to} end={link.end} className={linkClass}>
+                <Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+                <span>{link.label}</span>
+              </NavLink>
+            );
+          })}
         </nav>
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-kalma-border space-y-3">
           <OrderSoundToggle />
           <p className="text-sm text-kalma-muted truncate">{user?.name}</p>
-          <button onClick={logout} className="text-sm text-red-400 hover:text-red-300">
+          <button onClick={logout} className="flex items-center gap-2 text-sm text-red-400 hover:text-red-300">
+            <LogOut className="w-4 h-4" strokeWidth={1.75} />
             Logout
           </button>
         </div>
@@ -61,20 +77,24 @@ const AdminLayout = () => {
         <header className="bg-kalma-dark border-b border-kalma-border px-3 sm:px-4 py-3 sm:py-4 lg:hidden space-y-2 sm:space-y-3">
           <OrderSoundToggle />
           <div className="flex gap-2 overflow-x-auto">
-            {sidebarLinks.map((link) => (
-              <NavLink
-                key={link.to}
-                to={link.to}
-                end={link.end}
-                className={({ isActive }) =>
-                  `px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap transition-all ${
-                    isActive ? 'bg-kalma-gold text-kalma-dark font-medium' : 'bg-kalma-card text-kalma-muted hover:bg-kalma-border'
-                  }`
-                }
-              >
-                {link.label}
-              </NavLink>
-            ))}
+            {sidebarLinks.map((link) => {
+              const Icon = link.icon;
+              return (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  end={link.end}
+                  className={({ isActive }) =>
+                    `flex items-center gap-1.5 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg text-xs sm:text-sm whitespace-nowrap transition-all ${
+                      isActive ? 'bg-kalma-gold text-kalma-dark font-medium' : 'bg-kalma-card text-kalma-muted hover:bg-kalma-border'
+                    }`
+                  }
+                >
+                  <Icon className="w-3.5 h-3.5 shrink-0" strokeWidth={1.75} />
+                  {link.label}
+                </NavLink>
+              );
+            })}
           </div>
         </header>
         <main className="p-3 sm:p-4 md:p-6 lg:p-8">

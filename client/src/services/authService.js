@@ -29,3 +29,13 @@ export const setupAdmin = async (adminData) => {
   const { data } = await api.post('/auth/admin/setup', adminData);
   return data;
 };
+
+export const generateRegistrationCodes = async (quantity = 1) => {
+  const { data } = await api.post('/auth/admin/codes/generate', { quantity });
+  return data;
+};
+
+export const getRegistrationCodes = async (status = 'all') => {
+  const { data } = await api.get(`/auth/admin/codes?status=${status}`);
+  return data;
+};

@@ -9,6 +9,7 @@ import {
 } from '../utils/preOrderStorage';
 import { formatPrice, formatDate } from '../utils/formatters';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { Check, Copy, QrCode } from 'lucide-react';
 import ErrorMessage from '../components/ErrorMessage';
 
 const PreOrderRedeemPage = () => {
@@ -199,7 +200,10 @@ const PreOrderSharePage = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12 animate-fade-in text-center">
-      <h1 className="section-title mb-2">Your Pre-order QR</h1>
+      <h1 className="section-title mb-2 flex items-center justify-center gap-2">
+        <QrCode className="w-7 h-7 text-kalma-gold" strokeWidth={1.75} />
+        Your Pre-order QR
+      </h1>
       <p className="text-kalma-muted mb-8">
         Show this QR to staff at the counter. They will scan it to place your order. Valid for 24 hours.
       </p>
@@ -240,8 +244,18 @@ const PreOrderSharePage = () => {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
-        <button onClick={handleCopy} className="btn-secondary">
-          {copied ? 'Link copied!' : 'Copy staff link'}
+        <button onClick={handleCopy} className="btn-secondary flex items-center justify-center gap-2">
+          {copied ? (
+            <>
+              <Check className="w-4 h-4" strokeWidth={2} />
+              Link copied!
+            </>
+          ) : (
+            <>
+              <Copy className="w-4 h-4" strokeWidth={1.75} />
+              Copy staff link
+            </>
+          )}
         </button>
         <Link to={`/preorder/${token}`} className="btn-primary">
           View pre-order status

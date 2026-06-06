@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { createOrder } from '../services/orderService';
 import { formatPrice } from '../utils/formatters';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { CreditCard } from 'lucide-react';
 import ErrorMessage from '../components/ErrorMessage';
 
 const CheckoutPage = () => {
@@ -83,7 +84,14 @@ const CheckoutPage = () => {
         disabled={loading}
         className="btn-primary w-full flex items-center justify-center gap-2 disabled:opacity-50 py-3 sm:py-3 text-sm sm:text-base"
       >
-        {loading ? <LoadingSpinner size="sm" /> : 'Place Order'}
+        {loading ? (
+          <LoadingSpinner size="sm" />
+        ) : (
+          <>
+            <CreditCard className="w-4 h-4" strokeWidth={1.75} />
+            Place Order
+          </>
+        )}
       </button>
     </div>
   );

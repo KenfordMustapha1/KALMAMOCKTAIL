@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { ShoppingCart } from 'lucide-react';
 import { formatPrice } from '../utils/formatters';
 
 const DrinkCard = ({ drink, onAddToCart }) => {
@@ -37,8 +38,9 @@ const DrinkCard = ({ drink, onAddToCart }) => {
                 e.preventDefault();
                 onAddToCart(drink);
               }}
-              className="px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-kalma-gold/10 text-kalma-gold border border-kalma-gold/30 rounded-lg hover:bg-kalma-gold hover:text-kalma-dark transition-all whitespace-nowrap"
+              className="flex items-center gap-1.5 px-3 py-1.5 sm:py-2 text-xs sm:text-sm bg-kalma-gold/10 text-kalma-gold border border-kalma-gold/30 rounded-lg hover:bg-kalma-gold hover:text-kalma-dark transition-all whitespace-nowrap"
             >
+              <ShoppingCart className="w-3.5 h-3.5" strokeWidth={1.75} />
               Add to Cart
             </button>
           )}

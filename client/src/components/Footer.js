@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom';
+import { LogIn, Menu, ShoppingCart } from 'lucide-react';
 import { CATEGORIES } from '../utils/constants';
+import { getCategoryIcon } from '../utils/categoryIcons';
 
 const Footer = () => {
   return (
@@ -20,8 +22,9 @@ const Footer = () => {
                 <li key={cat}>
                   <Link
                     to={`/menu?category=${encodeURIComponent(cat)}`}
-                    className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors"
+                    className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors flex items-center gap-2"
                   >
+                    {getCategoryIcon(cat, 'w-3.5 h-3.5 text-kalma-gold/70')}
                     {cat}
                   </Link>
                 </li>
@@ -31,9 +34,24 @@ const Footer = () => {
           <div>
             <h4 className="text-white font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Quick Links</h4>
             <ul className="space-y-1.5 sm:space-y-2">
-              <li><Link to="/menu" className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors">Menu</Link></li>
-              <li><Link to="/cart" className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors">Cart</Link></li>
-              <li><Link to="/login" className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors">Login</Link></li>
+              <li>
+                <Link to="/menu" className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors flex items-center gap-2">
+                  <Menu className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  Menu
+                </Link>
+              </li>
+              <li>
+                <Link to="/cart" className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors flex items-center gap-2">
+                  <ShoppingCart className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  Cart
+                </Link>
+              </li>
+              <li>
+                <Link to="/login" className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm transition-colors flex items-center gap-2">
+                  <LogIn className="w-3.5 h-3.5" strokeWidth={1.75} />
+                  Login
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

@@ -4,7 +4,9 @@ import { getDrinks } from '../services/drinkService';
 import DrinkCard from '../components/DrinkCard';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useCart } from '../context/CartContext';
+import { ArrowRight } from 'lucide-react';
 import { CATEGORIES } from '../utils/constants';
+import { getCategoryIcon } from '../utils/categoryIcons';
 
 const LandingPage = () => {
   const [featuredDrinks, setFeaturedDrinks] = useState([]);
@@ -90,14 +92,15 @@ const LandingPage = () => {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="w-14 sm:w-16 h-14 sm:h-16 mx-auto mb-3 sm:mb-4 rounded-full bg-kalma-gold/10 flex items-center justify-center group-hover:bg-kalma-gold/20 transition-colors">
-                  <span className="text-xl sm:text-2xl">
-                    {category === 'Dirty Soda' ? '🥤' : category === 'Mocktail' ? '🍹' : '🍸'}
-                  </span>
+                  {getCategoryIcon(category)}
                 </div>
                 <h3 className="font-display text-lg sm:text-xl font-semibold text-white group-hover:text-kalma-gold transition-colors">
                   {category}
                 </h3>
-                <p className="text-kalma-muted text-xs sm:text-sm mt-2">View collection →</p>
+                <p className="text-kalma-muted text-xs sm:text-sm mt-2 flex items-center justify-center gap-1">
+                  View collection
+                  <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+                </p>
               </Link>
             ))}
           </div>

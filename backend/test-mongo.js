@@ -1,20 +1,18 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
+const dns = require('dns');
+
+dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+
+const connectDB = require('./src/config/db');
 
 console.log('Testing MongoDB connection...');
-console.log('URI:', process.env.MONGODB_URI.substring(0, 50) + '...');
 
-mongoose.connect(process.env.MONGODB_URI, {
-  serverSelectionTimeoutMS: 5000,
-})
-  .then(() => {
-    console.log('✅ MongoDB Connected Successfully!');
-    mongoose.connection.close();
+connectDB().then((connected) => {
+  if (connected) {
+    console.log('MongoDB connected successfully');
     process.exit(0);
-  })
-  .catch(err => {
-    console.error('❌ Connection Error:');
-    console.error('Message:', err.message);
-    console.error('Code:', err.code);
-    process.exit(1);
-  });
+  }
+
+  console.error('MongoDB connection failed');
+  process.exit(1);
+});

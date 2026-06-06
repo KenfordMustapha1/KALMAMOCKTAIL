@@ -11,6 +11,7 @@ import ErrorMessage from '../../components/ErrorMessage';
 import StatusBadge from '../../components/StatusBadge';
 import { ORDER_STATUSES } from '../../utils/constants';
 import { formatPrice, formatDate } from '../../utils/formatters';
+import { Plus, Trash2 } from 'lucide-react';
 import { playOrderReadyBuzzer, playOrderCompletedBuzzer } from '../../utils/orderSound';
 
 const getCustomerLabel = (order) => {
@@ -104,8 +105,12 @@ const AdminOrders = () => {
     <div className="animate-fade-in px-0">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 sm:gap-4 mb-6 sm:mb-8 px-3 sm:px-0">
         <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white">Orders</h1>
-        <Link to="/admin/orders/new" className="btn-primary text-xs sm:text-sm py-2 sm:py-3 px-4 sm:px-6 w-full sm:w-auto text-center">
-          + Manual order
+        <Link
+          to="/admin/orders/new"
+          className="btn-primary text-xs sm:text-sm py-2 sm:py-3 px-4 sm:px-6 w-full sm:w-auto text-center flex items-center justify-center gap-2"
+        >
+          <Plus className="w-4 h-4" strokeWidth={2} />
+          Manual order
         </Link>
       </div>
 
@@ -207,7 +212,14 @@ const AdminOrders = () => {
                       disabled={deleting === order._id}
                       className="px-2 sm:px-3 py-1 text-xs rounded-lg border border-red-500/50 text-red-400 hover:bg-red-500/10 disabled:opacity-50 ml-auto whitespace-nowrap"
                     >
-                      {deleting === order._id ? 'Deleting...' : 'Delete'}
+                      {deleting === order._id ? (
+                        'Deleting...'
+                      ) : (
+                        <span className="flex items-center gap-1">
+                          <Trash2 className="w-3 h-3" strokeWidth={1.75} />
+                          Delete
+                        </span>
+                      )}
                     </button>
                   </>
                 )}

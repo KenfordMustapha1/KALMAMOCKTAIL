@@ -7,7 +7,7 @@ import ErrorMessage from '../components/ErrorMessage';
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    registrationCode: '',
     password: '',
     confirmPassword: '',
   });
@@ -17,7 +17,10 @@ const RegisterPage = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    // Auto-uppercase registration code
+    const newValue = name === 'registrationCode' ? value.toUpperCase() : value;
+    setFormData({ ...formData, [name]: newValue });
   };
 
   const handleSubmit = async (e) => {
@@ -26,12 +29,16 @@ const RegisterPage = () => {
       setError('Passwords do not match');
       return;
     }
+    if (!/^[A-Z]{2}\d{2}$/.test(formData.registrationCode)) {
+      setError('Registration code must be 2 letters + 2 numbers (e.g., AB12)');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
       await register({
         name: formData.name,
-        email: formData.email,
+        registrationCode: formData.registrationCode,
         password: formData.password,
       });
       navigate('/menu');
@@ -59,8 +66,18 @@ const RegisterPage = () => {
               <input type="text" name="name" value={formData.name} onChange={handleChange} className="input-field" required />
             </div>
             <div>
-              <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Email</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} className="input-field" required />
+              <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Registration Code</label>
+              <input 
+                type="text" 
+                name="registrationCode" 
+                value={formData.registrationCode} 
+                onChange={handleChange} 
+                className="input-field" 
+                placeholder="e.g., AB12"
+                maxLength={4}
+                required 
+              />
+              <p className="text-xs text-kalma-muted mt-1">Format: 2 letters + 2 numbers</p>
             </div>
             <div>
               <label className="block text-xs sm:text-sm text-kalma-muted mb-2">Password</label>

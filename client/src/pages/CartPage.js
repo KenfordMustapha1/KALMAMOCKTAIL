@@ -6,6 +6,7 @@ import { createPreOrder, getMyPreOrders } from '../services/preOrderService';
 import { saveActivePreOrderToken } from '../utils/preOrderStorage';
 import { formatPrice } from '../utils/formatters';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { Minus, Plus, QrCode, ShoppingCart, Trash2 } from 'lucide-react';
 import ErrorMessage from '../components/ErrorMessage';
 
 const CartPage = () => {
@@ -63,7 +64,11 @@ const CartPage = () => {
   if (cartItems.length === 0) {
     return (
       <div className="max-w-xl mx-auto px-3 sm:px-4 py-12 sm:py-20 text-center animate-fade-in min-h-screen flex flex-col items-center justify-center">
-        <div className="text-5xl sm:text-6xl mb-4">🛒</div>
+        <div className="mb-4 flex justify-center">
+          <div className="p-4 rounded-full bg-kalma-gold/10 text-kalma-gold">
+            <ShoppingCart className="w-12 h-12 sm:w-14 sm:h-14" strokeWidth={1.5} />
+          </div>
+        </div>
         <h1 className="section-title mb-3 sm:mb-4 text-2xl sm:text-4xl">Your cart is empty</h1>
         <p className="text-kalma-muted mb-6 sm:mb-8 text-sm sm:text-base">Add some delicious drinks to get started!</p>
         {activePreOrderToken && (
@@ -115,7 +120,7 @@ const CartPage = () => {
                   className="px-3 py-2 text-kalma-muted hover:text-white transition-colors text-base sm:text-sm"
                   aria-label="Decrease quantity"
                 >
-                  −
+                  <Minus className="w-4 h-4" strokeWidth={2} />
                 </button>
                 <span className="px-3 py-2 text-sm sm:text-base font-medium">{item.quantity}</span>
                 <button
@@ -123,7 +128,7 @@ const CartPage = () => {
                   className="px-3 py-2 text-kalma-muted hover:text-white transition-colors text-base sm:text-sm"
                   aria-label="Increase quantity"
                 >
-                  +
+                  <Plus className="w-4 h-4" strokeWidth={2} />
                 </button>
               </div>
               <p className="font-semibold text-white text-right text-sm sm:text-base min-w-fit">
@@ -134,7 +139,7 @@ const CartPage = () => {
                 className="text-red-400 hover:text-red-300 p-2 transition-colors self-end sm:self-auto"
                 aria-label="Remove item"
               >
-                ✕
+                <Trash2 className="w-4 h-4" strokeWidth={1.75} />
               </button>
             </div>
           </div>
@@ -155,7 +160,14 @@ const CartPage = () => {
             disabled={creatingQr}
             className="btn-secondary w-full flex items-center justify-center gap-2 disabled:opacity-50 text-sm sm:text-base py-2.5 sm:py-3"
           >
-            {creatingQr ? <LoadingSpinner size="sm" /> : 'Create QR Pre-order'}
+            {creatingQr ? (
+              <LoadingSpinner size="sm" />
+            ) : (
+              <>
+                <QrCode className="w-4 h-4" strokeWidth={1.75} />
+                Create QR Pre-order
+              </>
+            )}
           </button>
           <p className="text-kalma-muted text-xs sm:text-sm text-center leading-relaxed">
             Save your cart as a QR code. Show it to staff at the counter to place your order.

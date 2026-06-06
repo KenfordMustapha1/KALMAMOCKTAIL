@@ -4,6 +4,7 @@ import { getDrinkById } from '../services/drinkService';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 import { useCart } from '../context/CartContext';
+import { ArrowLeft, Check, Minus, Plus, ShoppingCart } from 'lucide-react';
 import { formatPrice } from '../utils/formatters';
 
 const DrinkDetailPage = () => {
@@ -42,8 +43,12 @@ const DrinkDetailPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-3 sm:px-4 py-8 sm:py-12 animate-fade-in pb-20">
-      <Link to="/menu" className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm mb-4 sm:mb-6 inline-block">
-        ← Back to Menu
+      <Link
+        to="/menu"
+        className="text-kalma-muted hover:text-kalma-gold text-xs sm:text-sm mb-4 sm:mb-6 inline-flex items-center gap-1.5"
+      >
+        <ArrowLeft className="w-4 h-4" strokeWidth={1.75} />
+        Back to Menu
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-10">
@@ -69,7 +74,7 @@ const DrinkDetailPage = () => {
                   className="px-4 py-3 text-kalma-muted hover:text-white transition-colors text-sm sm:text-base"
                   aria-label="Decrease quantity"
                 >
-                  −
+                  <Minus className="w-4 h-4" strokeWidth={2} />
                 </button>
                 <span className="px-4 py-3 font-medium text-sm sm:text-base">{quantity}</span>
                 <button
@@ -77,11 +82,24 @@ const DrinkDetailPage = () => {
                   className="px-4 py-3 text-kalma-muted hover:text-white transition-colors text-sm sm:text-base"
                   aria-label="Increase quantity"
                 >
-                  +
+                  <Plus className="w-4 h-4" strokeWidth={2} />
                 </button>
               </div>
-              <button onClick={handleAddToCart} className="btn-primary w-full py-3 text-sm sm:text-base font-semibold">
-                {added ? 'Added ✓' : 'Add to Cart'}
+              <button
+                onClick={handleAddToCart}
+                className="btn-primary w-full py-3 text-sm sm:text-base font-semibold flex items-center justify-center gap-2"
+              >
+                {added ? (
+                  <>
+                    <Check className="w-4 h-4" strokeWidth={2} />
+                    Added
+                  </>
+                ) : (
+                  <>
+                    <ShoppingCart className="w-4 h-4" strokeWidth={1.75} />
+                    Add to Cart
+                  </>
+                )}
               </button>
               <Link to="/cart" className="btn-secondary w-full py-3 text-center text-sm sm:text-base">View Cart</Link>
             </div>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Bell, BellOff } from 'lucide-react';
 import {
   isOrderSoundEnabled,
   setOrderSoundEnabled,
@@ -25,10 +26,15 @@ const CustomerOrderSoundToggle = ({ compact = false }) => {
       <button
         type="button"
         onClick={handleToggle}
-        className="text-sm text-kalma-muted hover:text-kalma-gold transition-colors"
+        className="flex items-center gap-1.5 text-sm text-kalma-muted hover:text-kalma-gold transition-colors"
         title={enabled ? 'Order alerts on' : 'Order alerts off'}
       >
-        {enabled ? '🔔 Alerts on' : '🔕 Alerts off'}
+        {enabled ? (
+          <Bell className="w-4 h-4" strokeWidth={1.75} />
+        ) : (
+          <BellOff className="w-4 h-4" strokeWidth={1.75} />
+        )}
+        {enabled ? 'Alerts on' : 'Alerts off'}
       </button>
     );
   }
@@ -36,7 +42,10 @@ const CustomerOrderSoundToggle = ({ compact = false }) => {
   return (
     <div className="card p-4 mb-6 flex flex-wrap items-center justify-between gap-3">
       <div>
-        <p className="text-white font-medium text-sm">Order ready alerts</p>
+        <p className="text-white font-medium text-sm flex items-center gap-2">
+          <Bell className="w-4 h-4 text-kalma-gold" strokeWidth={1.75} />
+          Order ready alerts
+        </p>
         <p className="text-kalma-muted text-xs mt-1">
           Get a buzz on your phone when your drink is ready for pickup.
         </p>
@@ -44,9 +53,14 @@ const CustomerOrderSoundToggle = ({ compact = false }) => {
       <button
         type="button"
         onClick={handleToggle}
-        className={enabled ? 'btn-primary text-sm' : 'btn-secondary text-sm'}
+        className={`${enabled ? 'btn-primary' : 'btn-secondary'} text-sm flex items-center gap-2`}
       >
-        {enabled ? '🔔 Buzzer ON' : '🔕 Buzzer OFF'}
+        {enabled ? (
+          <Bell className="w-4 h-4" strokeWidth={1.75} />
+        ) : (
+          <BellOff className="w-4 h-4" strokeWidth={1.75} />
+        )}
+        {enabled ? 'Buzzer ON' : 'Buzzer OFF'}
       </button>
     </div>
   );
