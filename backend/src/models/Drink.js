@@ -30,6 +30,11 @@ const drinkSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    size: {
+      type: String,
+      enum: ['Small', 'Medium', 'Large'],
+      default: 'Medium',
+    },
   },
   { timestamps: true }
 );

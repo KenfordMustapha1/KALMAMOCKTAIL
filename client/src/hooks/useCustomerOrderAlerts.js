@@ -31,7 +31,7 @@ const useCustomerOrderAlerts = (enabled = true) => {
         }
 
         const currentIds = new Set();
-
+        
         orders.forEach((order) => {
           currentIds.add(order._id);
           const previousStatus = orderStateRef.current.get(order._id);
@@ -86,5 +86,7 @@ const useCustomerOrderAlerts = (enabled = true) => {
 
   return { alert, dismissAlert };
 };
+
+
 
 export default useCustomerOrderAlerts;

@@ -13,6 +13,7 @@ const emptyForm = {
   description: '',
   image: '',
   availability: true,
+  size: 'Medium',
 };
 
 const AdminDrinks = () => {
@@ -79,6 +80,7 @@ const AdminDrinks = () => {
       description: drink.description,
       image: drink.image,
       availability: drink.availability,
+      size: drink.size || 'Medium',
     });
     setEditingId(drink._id);
     setShowForm(true);
@@ -151,6 +153,11 @@ const AdminDrinks = () => {
               {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
             </select>
             <input type="number" name="price" placeholder="Price" step="0.01" value={formData.price} onChange={handleChange} className="input-field" required />
+            <select name="size" value={formData.size} onChange={handleChange} className="input-field">
+              <option value="Small">Small</option>
+              <option value="Medium">Medium</option>
+              <option value="Large">Large</option>
+            </select>
             <input
               type="file"
               accept="image/*"
@@ -185,7 +192,7 @@ const AdminDrinks = () => {
             <div className="flex-1 flex flex-col justify-between mt-2 sm:mt-0">
               <div>
                 <h3 className="font-semibold text-white text-sm sm:text-base">{drink.name}</h3>
-                <p className="text-kalma-muted text-xs sm:text-sm">{drink.category} · {formatPrice(drink.price)}</p>
+                <p className="text-kalma-muted text-xs sm:text-sm">{drink.category} · {drink.size} · {formatPrice(drink.price)}</p>
                 <p className={`text-xs mt-1 ${drink.availability ? 'text-green-400' : 'text-red-400'}`}>
                   {drink.availability ? 'Available' : 'Unavailable'}
                 </p>
